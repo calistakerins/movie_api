@@ -41,6 +41,16 @@ def add_conversation(movie_id: int, conversation: ConversationJson):
     # TODO: Remove the following two lines. This is just a placeholder to show
     # how you could implement persistent storage.
 
+    # validate Json data w existing data in db
+        # check if movie_id exists
+        # check if character_1_id exists and has same movie_id
+        # check if character_2_id exists and has same movie_id
+        # check if character_1_id != character_2_id
+        # check if each line has either character_1_id or character_2_id
+
+    # add conversation to db
+    # return conversation_id
+
     print(conversation)
     db.logs.append({"post_call_time": datetime.now(), "movie_id_added_to": movie_id})
     db.upload_new_log()
