@@ -60,24 +60,18 @@ def try_parse(type, val):
     except ValueError:
         return None
 
-# Reading in the movies file from the supabase bucket
-movies_csv = (
-    supabase.storage.from_("movie-api")
-    .download("movies.csv")
-    .decode("utf-8")
-)
-
-movies = {
-    try_parse(int, row["movie_id"]): Movie(
-        try_parse(int, row["movie_id"]),
-        row["title"] or None,
-        row["year"] or None,
-        try_parse(float, row["imdb_rating"]),
-        try_parse(int, row["imdb_votes"]),
-        row["raw_script_url"] or None,
-    )
-    for row in csv.DictReader(movies_csv, skipinitialspace=True)
-}
+with open("movies.csv", mode="r", encoding="utf8") as csv_file:
+    movies = {
+        try_parse(int, row["movie_id"]): Movie(
+            try_parse(int, row["movie_id"]),
+            row["title"] or None,
+            row["year"] or None,
+            try_parse(float, row["imdb_rating"]),
+            try_parse(int, row["imdb_votes"]),
+            row["raw_script_url"] or None,
+        )
+        for row in csv.DictReader(csv_file, skipinitialspace=True)
+    }
 
 with open("characters.csv", mode="r", encoding="utf8") as csv_file:
     characters = {}
