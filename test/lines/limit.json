@@ -1,0 +1,72 @@
+[
+    {
+        "convo_id": 0,
+        "movie": "10 things i hate about you",
+        "character1": "BIANCA",
+        "character2": "CAMERON",
+        "number_of_lines": 4
+    },
+    {
+        "convo_id": 1,
+        "movie": "10 things i hate about you",
+        "character1": "BIANCA",
+        "character2": "CAMERON",
+        "number_of_lines": 2
+    },
+    {
+        "convo_id": 2,
+        "movie": "10 things i hate about you",
+        "character1": "BIANCA",
+        "character2": "CAMERON",
+        "number_of_lines": 4
+    },
+    {
+        "convo_id": 3,
+        "movie": "10 things i hate about you",
+        "character1": "BIANCA",
+        "character2": "CAMERON",
+        "number_of_lines": 3
+    },
+    {
+        "convo_id": 4,
+        "movie": "10 things i hate about you",
+        "character1": "BIANCA",
+        "character2": "CAMERON",
+        "number_of_lines": 2
+    },
+    {
+        "convo_id": 5,
+        "movie": "10 things i hate about you",
+        "character1": "BIANCA",
+        "character2": "CAMERON",
+        "number_of_lines": 5
+    },
+    {
+        "convo_id": 6,
+        "movie": "10 things i hate about you",
+        "character1": "BIANCA",
+        "character2": "CAMERON",
+        "number_of_lines": 2
+    },
+    {
+        "convo_id": 7,
+        "movie": "10 things i hate about you",
+        "character1": "BIANCA",
+        "character2": "CAMERON",
+        "number_of_lines": 2
+    },
+    {
+        "convo_id": 8,
+        "movie": "10 things i hate about you",
+        "character1": "BIANCA",
+        "character2": "CAMERON",
+        "number_of_lines": 2
+    },
+    {
+        "convo_id": 9,
+        "movie": "10 things i hate about you",
+        "character1": "BIANCA",
+        "character2": "CAMERON",
+        "number_of_lines": 2
+    }
+]
