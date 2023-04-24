@@ -49,6 +49,7 @@ def add_conversation(movie_id: int, conversation: ConversationJson):
         # check if each line has either character_1_id or character_2_id
 
     # add conversation to db
+    # add lines to db
     # return conversation_id
 
     print(conversation)
