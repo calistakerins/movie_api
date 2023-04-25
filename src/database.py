@@ -83,7 +83,7 @@ movies = {
 # Get characters from supabase
 chars_csv = (
     supabase.storage.from_("movie-api")
-    .download("conversations.csv")
+    .download("characters.csv")
     .decode("utf-8")
 )
 
