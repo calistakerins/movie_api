@@ -60,6 +60,8 @@ app = FastAPI(
 app.include_router(characters.router)
 app.include_router(movies.router)
 app.include_router(pkg_util.router)
+app.include_router(conversations.router)
+app.include_router(lines.router)
 
 
 
