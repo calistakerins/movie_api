@@ -26,6 +26,7 @@ You can:
 You can:
 * **list conversations with sorting and filtering options.**
 * **retrieve a specific conversation by id**
+* **add a conversation to a movie**
 """
 tags_metadata = [
     {
@@ -59,8 +60,6 @@ app = FastAPI(
 app.include_router(characters.router)
 app.include_router(movies.router)
 app.include_router(pkg_util.router)
-app.include_router(conversations.router)
-app.include_router(lines.router)
 
 
 
