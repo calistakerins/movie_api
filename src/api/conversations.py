@@ -62,14 +62,15 @@ def add_conversation(movie_id: int, conversation: ConversationJson):
         raise HTTPException(status_code=422, detail="Characters must be part of the referenced movie")
 
     # add conversation to db
-    convo_id = len(db.conversations)
-    db.conversations[convo_id] = Conversation(convo_id, movie_id, conversation.character_1_id, conversation.character_2_id, len(conversation.lines))
-
+    convo_id = len(db.convo_list)
+    #db.conversations[convo_id] = Conversation(convo_id, movie_id, conversation.character_1_id, conversation.character_2_id, len(conversation.lines))
+    db.convo_list.append({"conversation_id": convo_id, "movie_id": movie_id, "character_1_id": conversation.character_1_id, "character_2_id": conversation.character_2_id})
     # add lines to db
     line_num = 0
     for line in conversation.lines:
         line_id = len(db.lines)
-        db.lines[line_id] = Line(line_id, line.character_id, movie_id, convo_id, line_num, line.line_text)
+        #db.lines[line_id] = Line(line_id, line.character_id, movie_id, convo_id, line_num, line.line_text)
+        db.lines_list.append({"line_id": line_id, "character_id": line.character_id, "movie_id": movie_id, "conversation_id": convo_id, "line_sort": line_num, "line_text": line.line_text})
         line_num += 1
     
     print(conversation)
