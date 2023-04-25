@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from src import database as db
+from src.datatypes import Conversation, Line
 from pydantic import BaseModel
 from typing import List
 from datetime import datetime
@@ -60,6 +61,19 @@ def add_conversation(movie_id: int, conversation: ConversationJson):
     if(db.characters[conversation.character_1_id].movie_id != movie_id or db.characters[conversation.character_2_id].movie_id != movie_id):
         raise HTTPException(status_code=422, detail="Characters must be part of the referenced movie")
 
+    # add conversation to db
+    convo_id = len(db.conversations)
+    db.conversations[convo_id] = Conversation(convo_id, movie_id, conversation.character_1_id, conversation.character_2_id, len(conversation.lines))
+
+    # add lines to db
+    line_num = 0
+    for line in conversation.lines:
+        line_id = len(db.lines)
+        db.lines[line_id] = Line(line_id, line.character_id, movie_id, convo_id, line_num, line.line_text)
+        line_num += 1
+    
     print(conversation)
     db.logs.append({"post_call_time": datetime.now(), "movie_id_added_to": movie_id})
     db.upload_new_log()
+    db.upload_new_conversation()
+    db.upload_new_lines()
