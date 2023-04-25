@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from src import database as db
 from pydantic import BaseModel
 from typing import List
@@ -48,9 +48,17 @@ def add_conversation(movie_id: int, conversation: ConversationJson):
         # check if character_1_id != character_2_id
         # check if each line has either character_1_id or character_2_id
 
-    # add conversation to db
-    # add lines to db
-    # return conversation_id
+    if(db.movies.get(movie_id) is None):
+        raise HTTPException(status_code=422, detail="Movie not found.")
+    if(conversation.character_1_id not in db.characters or conversation.character_2_id not in db.characters):
+        raise HTTPException(status_code=422, detail="Character ID not found")
+    if(conversation.character_1_id == conversation.character_2_id):
+        raise HTTPException(status_code=422, detail="Character IDs must be different")
+    for line in conversation.lines:
+        if(line.character_id != conversation.character_1_id and line.character_id != conversation.character_2_id):
+            raise HTTPException(status_code=422, detail="Line character ID does not match conversation character IDs")
+    if(db.characters[conversation.character_1_id].movie_id != movie_id or db.characters[conversation.character_2_id].movie_id != movie_id):
+        raise HTTPException(status_code=422, detail="Characters must be part of the referenced movie")
 
     print(conversation)
     db.logs.append({"post_call_time": datetime.now(), "movie_id_added_to": movie_id})
