@@ -119,6 +119,10 @@ for row in csv.DictReader(io.StringIO(conversations_csv), skipinitialspace=True)
     )
     conversations[conv.id] = conv
 
+convo_list = []
+for convo in list(conversations.values()):
+    convo_list.append(vars(convo))
+
 # Writing to the conversations file and uploading to the supabase bucket
 def upload_new_conversation():
     output = io.StringIO()
@@ -126,7 +130,7 @@ def upload_new_conversation():
         output, fieldnames=["conversation_id", "character1_id", "character2_id", "movie_id"]
     )
     csv_writer.writeheader()
-    csv_writer.writerows(conversations)
+    csv_writer.writerows(convo_list)
     supabase.storage.from_("movie-api").upload(
         "conversations.csv",
         bytes(output.getvalue(), "utf-8"),
@@ -162,13 +166,17 @@ for row in csv.DictReader(io.StringIO(lines_csv), skipinitialspace=True):
         conv.num_lines += 1
 
 # Writing to the lines file and uploading to the supabase bucket
+lines_list = []
+for line in list(lines.values()):
+    lines_list.append(vars(line))
+
 def upload_new_lines():
     output = io.StringIO()
     csv_writer = csv.DictWriter(
         output, fieldnames=["line_id", "character_id", "movie_id", "conversation_id", "line_sort", "line_text"]
     )
     csv_writer.writeheader()
-    csv_writer.writerows(lines)
+    csv_writer.writerows(lines_list)
     supabase.storage.from_("movie-api").upload(
         "conversations.csv",
         bytes(output.getvalue(), "utf-8"),
