@@ -119,6 +119,21 @@ for row in csv.DictReader(io.StringIO(conversations_csv), skipinitialspace=True)
     )
     conversations[conv.id] = conv
 
+# Writing to the conversations file and uploading to the supabase bucket
+def upload_new_conversation():
+    output = io.StringIO()
+    csv_writer = csv.DictWriter(
+        output, fieldnames=["conversation_id", "character1_id", "character2_id", "movie_id"]
+    )
+    csv_writer.writeheader()
+    csv_writer.writerows(conversations.values())
+    supabase.storage.from_("movie-api").upload(
+        "conversations.csv",
+        bytes(output.getvalue(), "utf-8"),
+        {"x-upsert": "true"},
+    )
+
+
 # Get lines from supabase
 lines_csv = (
     supabase.storage.from_("movie-api")
@@ -145,3 +160,17 @@ for row in csv.DictReader(io.StringIO(lines_csv), skipinitialspace=True):
     conv = conversations.get(line.conv_id)
     if conv:
         conv.num_lines += 1
+
+# Writing to the lines file and uploading to the supabase bucket
+def upload_new_lines():
+    output = io.StringIO()
+    csv_writer = csv.DictWriter(
+        output, fieldnames=["line_id", "character_id", "movie_id", "conversation_id", "line_sort", "line_text"]
+    )
+    csv_writer.writeheader()
+    csv_writer.writerows(lines.values())
+    supabase.storage.from_("movie-api").upload(
+        "conversations.csv",
+        bytes(output.getvalue(), "utf-8"),
+        {"x-upsert": "true"},
+    )
