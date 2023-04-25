@@ -64,7 +64,7 @@ def add_conversation(movie_id: int, conversation: ConversationJson):
     # add conversation to db
     convo_id = len(db.convo_list)
     #db.conversations[convo_id] = Conversation(convo_id, movie_id, conversation.character_1_id, conversation.character_2_id, len(conversation.lines))
-    db.convo_list.append({"conversation_id": convo_id, "movie_id": movie_id, "character_1_id": conversation.character_1_id, "character_2_id": conversation.character_2_id})
+    db.convo_list.append({"conversation_id": convo_id, "movie_id": movie_id, "character1_id": conversation.character_1_id, "character2_id": conversation.character_2_id})
     # add lines to db
     line_num = 0
     for line in conversation.lines:
