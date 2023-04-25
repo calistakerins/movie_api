@@ -77,7 +77,7 @@ movies = {
         try_parse(int, row["imdb_votes"]),
         row["raw_script_url"] or None,
     )
-    for row in csv.DictReader(movies_csv, skipinitialspace=True)
+    for row in csv.DictReader(io.StringIO(movies_csv), skipinitialspace=True)
 }
 
 # Get characters from supabase
@@ -89,7 +89,7 @@ chars_csv = (
 
 # Convert characters
 characters = {}
-for row in csv.DictReader(chars_csv, skipinitialspace=True):
+for row in csv.DictReader(io.StringIO(chars_csv), skipinitialspace=True):
     char = Character(
         try_parse(int, row["character_id"]),
         row["name"] or None,
@@ -109,7 +109,7 @@ conversations_csv = (
 
 # Convert conversations
 conversations = {}
-for row in csv.DictReader(conversations_csv, skipinitialspace=True):
+for row in csv.DictReader(io.StringIO(conversations_csv), skipinitialspace=True):
     conv = Conversation(
         try_parse(int, row["conversation_id"]),
         try_parse(int, row["character1_id"]),
@@ -128,7 +128,7 @@ lines_csv = (
 
 # Convert lines
 lines = {}
-for row in csv.DictReader(lines_csv, skipinitialspace=True):
+for row in csv.DictReader(io.StringIO(lines_csv), skipinitialspace=True):
     line = Line(
         try_parse(int, row["line_id"]),
         try_parse(int, row["character_id"]),
