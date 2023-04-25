@@ -126,7 +126,7 @@ def upload_new_conversation():
         output, fieldnames=["conversation_id", "character1_id", "character2_id", "movie_id"]
     )
     csv_writer.writeheader()
-    csv_writer.writerows(conversations.values())
+    csv_writer.writerows(conversations)
     supabase.storage.from_("movie-api").upload(
         "conversations.csv",
         bytes(output.getvalue(), "utf-8"),
@@ -168,7 +168,7 @@ def upload_new_lines():
         output, fieldnames=["line_id", "character_id", "movie_id", "conversation_id", "line_sort", "line_text"]
     )
     csv_writer.writeheader()
-    csv_writer.writerows(lines.values())
+    csv_writer.writerows(lines)
     supabase.storage.from_("movie-api").upload(
         "conversations.csv",
         bytes(output.getvalue(), "utf-8"),
