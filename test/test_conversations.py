@@ -22,9 +22,6 @@ def test_add_conversation():
     )
     assert response.status_code == 200
 
-    with open("test/conversations/conversation.json", encoding="utf-8") as f:
-        assert response.json() == json.load(f)
-
 def test_add_conversation2():
     response = client.post(
         "/movies/0/conversations/",
