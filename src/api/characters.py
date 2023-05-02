@@ -71,7 +71,8 @@ def get_character(id: int):
             sa.func.count(db.lines.c.line_id).label("num_lines"),
         )
         .select_from(
-            db.characters.join(db.conversations, db.characters.c.character_id == db.conversations.c.character1_id == id or db.characters.c.character_id == db.conversations.c.character2_id == id)
+            db.conversations.join(db.characters, db.characters.c.character_id == db.conversations.c.character1_id or db.characters.c.character_id == db.conversations.c.character2_id)
+            .join(sa.select([db.conversations.c.conversation_id]).where((db.conversations.c.character1_id == id or db.conversations.c.character2_id == id) and db.conversations.c.movie_id == db.characters.c.movie_id))
             .join(db.lines, db.conversations.c.conversation_id == db.lines.c.conversation_id)
         )
         .where(db.characters.c.character_id != id)
