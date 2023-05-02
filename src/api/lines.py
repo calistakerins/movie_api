@@ -36,19 +36,20 @@ def get_convo(id: int):
     * `character`: The name of the character.
     * `line_text`: The line the character is speaking.
     """
-    convo = db.conversations.get(id)
+    # convo = db.conversations.get(id)
 
-    if convo:
-        movie = db.movies.get(convo.movie_id)
-        result = {"convo_id": convo.id,
-                 "movie": movie and movie.title, 
-                 "character1": db.characters.get(convo.c1_id).name, 
-                 "character2": db.characters.get(convo.c2_id).name, 
-                 "conversation_lines": get_convo_lines(convo)
-        }
-        return result
+    # if convo:
+    #     movie = db.movies.get(convo.movie_id)
+    #     result = {"convo_id": convo.id,
+    #              "movie": movie and movie.title, 
+    #              "character1": db.characters.get(convo.c1_id).name, 
+    #              "character2": db.characters.get(convo.c2_id).name, 
+    #              "conversation_lines": get_convo_lines(convo)
+    #     }
+    #     return result
 
-    raise HTTPException(status_code=404, detail="conversation not found.")
+    # raise HTTPException(status_code=404, detail="conversation not found.")
+    return None
 
 
 
@@ -71,18 +72,19 @@ def list_convos(
     maximum number of results to return. The `offset` query parameter specifies the
     number of results to skip before returning results.
     """
-    items = list(db.conversations.values())
-    json = (
-        {
-            "convo_id": c.id,
-            "movie": db.movies[c.movie_id].title,
-            "character1": db.characters[c.c1_id].name,
-            "character2": db.characters[c.c2_id].name,
-            "number_of_lines": c.num_lines
-        }
-        for c in items[offset : offset + limit]
-    )
-    return json
+    # items = list(db.conversations.values())
+    # json = (
+    #     {
+    #         "convo_id": c.id,
+    #         "movie": db.movies[c.movie_id].title,
+    #         "character1": db.characters[c.c1_id].name,
+    #         "character2": db.characters[c.c2_id].name,
+    #         "number_of_lines": c.num_lines
+    #     }
+    #     for c in items[offset : offset + limit]
+    # )
+    # return json
+    return None
 
 
 @router.get("/lines/{movie_id}", tags=["lines"])
@@ -92,13 +94,14 @@ def get_script(movie_id: int):
     * `character`: The name of the character speaking the line.
     * `line_text`: The line the character is speaking.
     """
-    all_lines = filter(lambda line: line.movie_id == movie_id, db.lines.values())
-    lines = []
+    # all_lines = filter(lambda line: line.movie_id == movie_id, db.lines.values())
+    # lines = []
 
-    for line in all_lines:
-        lines.append({
-            "character": db.characters.get(line.c_id).name,
-            "line_text": line.line_text
-        })
+    # for line in all_lines:
+    #     lines.append({
+    #         "character": db.characters.get(line.c_id).name,
+    #         "line_text": line.line_text
+    #     })
 
-    return lines
+    # return lines
+    return None
