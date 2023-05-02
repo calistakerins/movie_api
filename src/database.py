@@ -13,6 +13,8 @@ def database_connection_url():
     DB_NAME: str = os.environ.get("POSTGRES_DB")
     return f"postgresql://{DB_USER}:{DB_PASSWD}@{DB_SERVER}:{DB_PORT}/{DB_NAME}"
 
+engine = sqlalchemy.create_engine(database_connection_url())
+
 # Use reflection to derive table schema.
 metadata_obj = sqlalchemy.MetaData()
 movies = sqlalchemy.Table("movies", metadata_obj, autoload=True, autoload_with=engine)
