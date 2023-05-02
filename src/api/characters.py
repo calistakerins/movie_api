@@ -50,6 +50,63 @@ def get_character(id: int):
     * `number_of_lines_together`: The number of lines the character has with the
       originally queried character.
     """
+    stmt = (
+        sa.select(
+            db.characters.c.character_id,
+            db.characters.c.name,
+            db.movies.c.title,
+            db.characters.c.gender,
+        )
+        .select_from(
+            db.characters.join(db.movies, db.characters.c.movie_id == db.movies.c.movie_id)
+        )
+        .where(db.characters.c.character_id == id)
+    )
+
+    stmt2 = (
+        sa.select(
+            db.characters.c.character_id, 
+            db.characters.c.name, 
+            db.characters.c.gender,
+            sa.func.count(db.lines.c.line_id).label("num_lines"),
+        )
+        .select_from(
+            db.characters.join(db.conversations, db.characters.c.character_id == db.conversations.c.character1_id or db.characters.c.character_id == db.conversations.c.character2_id)
+            .join(db.lines, db.conversations.c.conversation_id == db.lines.c.conversation_id)
+        )
+        .where(db.characters.c.character_id != id)
+        .group_by(db.characters.c.character_id, db.characters.c.name, db.characters.c.gender)
+        .order_by(sa.desc("num_lines"))
+        .limit(5)
+    )
+
+    json = None
+
+    with db.engine.connect() as conn:
+        result = conn.execute(stmt)
+        result2 = conn.execute(stmt2)
+        top_conversations = []
+        for row in result2:
+            top_conversations.append(
+                {
+                    "character_id": row.character_id,
+                    "character": row.name,
+                    "gender": row.gender,
+                    "number_of_lines_together": row.num_lines,
+                }
+            )
+        for row in result:
+            json = {
+                "character_id": row.character_id,
+                "character": row.name,
+                "movie": row.title,
+                "gender": row.gender,
+                "top_conversations": top_conversations,
+            }
+
+    if json is None:
+        raise HTTPException(status_code=404, detail="character not found.")
+    return json
 
     # character = db.characters.get(id)
 
