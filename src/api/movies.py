@@ -59,8 +59,8 @@ def get_movie(movie_id: int):
                 }
             )
         json = {
-            "movie_id": result.movie_id,
-            "title": result.title,
+            "movie_id": result[0].movie_id,
+            "title": result[0].title,
             "top_characters": top_characters,
         }
 
