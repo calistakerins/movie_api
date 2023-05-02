@@ -2,7 +2,6 @@ from sqlalchemy import create_engine
 import os
 import dotenv
 import sqlalchemy
-from datatypes import Movie, Character, Conversation, Line
 
 def database_connection_url():
     dotenv.load_dotenv()
