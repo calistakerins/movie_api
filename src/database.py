@@ -14,9 +14,12 @@ def database_connection_url():
 
 engine = sqlalchemy.create_engine(database_connection_url())
 
+conn = engine.connect()
+
 # Use reflection to derive table schema.
 metadata_obj = sqlalchemy.MetaData()
 movies = sqlalchemy.Table("movies", metadata_obj, autoload=True, autoload_with=engine)
-characters = sqlalchemy.Table("characters", metadata_obj, autoload=True, autoload_with=engine)
-conversations = sqlalchemy.Table("conversations", metadata_obj, autoload=True, autoload_with=engine)
-lines = sqlalchemy.Table("lines", metadata_obj, autoload=True, autoload_with=engine)
+#characters = sqlalchemy.Table("characters", metadata_obj, autoload=True, autoload_with=engine)
+#conversations = sqlalchemy.Table("conversations", metadata_obj, autoload=True, autoload_with=engine)
+#lines = sqlalchemy.Table("lines", metadata_obj, autoload=True, autoload_with=engine)
+
