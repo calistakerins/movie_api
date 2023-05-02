@@ -58,11 +58,12 @@ def get_movie(movie_id: int):
                     "num_lines": row.num_lines,
                 }
             )
-        json = {
-            "movie_id": result[0].movie_id,
-            "title": result[0].title,
-            "top_characters": top_characters,
-        }
+        for row in result:
+            json = {
+                "movie_id": row.movie_id,
+                "title": row.title,
+                "top_characters": top_characters,
+            }
 
     if json is None:
         raise HTTPException(status_code=404, detail="movie not found.")
