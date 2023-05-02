@@ -115,7 +115,7 @@ def list_characters(
     elif sort is character_sort_options.movie:
         order_by = db.movies.c.title
     elif sort is character_sort_options.number_of_lines:
-        order_by = sa.desc(sa.func.count(db.lines.c.character_id))
+        order_by = sa.desc(sa.func.count(db.lines.c.line_id))
     else:
         assert False
 
@@ -124,11 +124,11 @@ def list_characters(
             db.characters.c.character_id,
             db.characters.c.name,
             db.movies.c.title,
-            sa.func.count(db.lines.c.line_id).label("num_lines")
+            sa.func.count(db.lines.c.line_id).label("number_of_lines")
         ).select_from(
             db.characters.join(db.lines, db.characters.c.character_id == db.lines.c.character_id).join(db.movies, db.characters.c.movie_id == db.movies.c.movie_id)
         )
-        .group_by(db.characters.c.character_id)
+        .group_by(db.characters.c.character_id, db.movies.c.title)
         .limit(limit)
         .offset(offset)
         .order_by(order_by, db.characters.c.name)
@@ -147,7 +147,7 @@ def list_characters(
                     "character_id": row.character_id,
                     "character": row.name,
                     "movie": row.title,
-                    "number_of_lines": row.num_lines,
+                    "number_of_lines": row.number_of_lines,
                 }
             )
 
