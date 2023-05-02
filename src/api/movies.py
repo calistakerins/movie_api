@@ -23,25 +23,37 @@ def get_movie(movie_id: int):
     * `num_lines`: The number of lines the character has in the movie.
 
     """
+    stmt = (sa.select(db.movies.c.movie_id, db.movies.c.title)).where(
+        db.movies.c.movie_id == movie_id
+    )
 
-    # movie = db.movies.get(movie_id)
-    # if movie:
-    #     top_chars = [
-    #         {"character_id": c.id, "character": c.name, "num_lines": c.num_lines}
-    #         for c in db.characters.values()
-    #         if c.movie_id == movie_id
-    #     ]
-    #     top_chars.sort(key=lambda c: c["num_lines"], reverse=True)
+    stmt2 = (sa.select(db.characters.c.id, 
+                       db.characters.c.name, 
+                       sa.func.count(db.lines.c.line_id).label("num_lines"))).join(db.characters, db.lines.c.character_id == db.characters.c.charcter_id).where(db.characters.c.movie_id == movie_id).group_by(db.characters.c.id).order_by(sa.desc("num_lines")).limit(5)
 
-    #     result = {
-    #         "movie_id": movie_id,
-    #         "title": movie.title,
-    #         "top_characters": top_chars[0:5],
-    #     }
-    #     return result
+    json = None
 
-    # raise HTTPException(status_code=404, detail="movie not found.")
-    return None
+    with db.engine.connect() as conn:
+        result = conn.execute(stmt)
+        result2 = conn.execute(stmt2)
+        top_characters = []
+        for row in result2:
+            top_characters.append(
+                {
+                    "character_id": row.character_id,
+                    "character": row.name,
+                    "num_lines": row.num_lines,
+                }
+            )
+        json = {
+            "movie_id": result.movie_id,
+            "title": result.title,
+            "top_characters": top_characters,
+        }
+
+    if json is None:
+        raise HTTPException(status_code=404, detail="movie not found.")
+    return json
 
 
 class movie_sort_options(str, Enum):
