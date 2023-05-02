@@ -23,8 +23,12 @@ def get_movie(movie_id: int):
     * `num_lines`: The number of lines the character has in the movie.
 
     """
-    stmt = (sa.select(db.movies.c.movie_id, db.movies.c.title)).where(
-        db.movies.c.movie_id == movie_id
+    stmt = (
+        sa.select(
+            db.movies.c.movie_id,
+            db.movies.c.title,
+        )
+        .where(db.movies.c.movie_id == movie_id)
     )
 
     stmt2 = (
