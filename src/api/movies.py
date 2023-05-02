@@ -27,9 +27,18 @@ def get_movie(movie_id: int):
         db.movies.c.movie_id == movie_id
     )
 
-    stmt2 = (sa.select(db.characters.c.id, 
-                       db.characters.c.name, 
-                       sa.func.count(db.lines.c.line_id).label("num_lines"))).join(db.characters, db.lines.c.character_id == db.characters.c.charcter_id).where(db.characters.c.movie_id == movie_id).group_by(db.characters.c.id).order_by(sa.desc("num_lines")).limit(5)
+    stmt2 = (
+        sa.select(
+            db.characters.c.character_id, 
+            db.characters.c.name, 
+            sa.func.count(db.lines.c.line_id).label("num_lines"),
+        )
+        .join(db.characters, db.lines.c.character_id == db.characters.c.charcter_id)
+        .where(db.characters.c.movie_id == movie_id)
+        .group_by(db.characters.c.id)
+        .order_by(sa.desc("num_lines"))
+        .limit(5)
+    )
 
     json = None
 
